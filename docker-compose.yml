@@ -6,7 +6,7 @@ volumes:
 
 services:
   Taco:
-    image: gitact:v0.1.0
+    image: biighunter/gitact:v0.1.0
     volumes:
       - certbot:/etc/letsencrypt
       - conf:/etc/nginx/conf.d
