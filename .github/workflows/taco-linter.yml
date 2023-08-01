@@ -1,26 +1,20 @@
-name: Build Taco Docker
+name: TACO
 
 on:
   push:
-    branches:
-      - main
-
+   branches: [ main ]
+  pull_request:
+    branches: [ main ]
+      
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.biighunter }}
-          password: ${{ secrets.11236939.Smh }}
-
-      - name: Build Docker image
-        run: docker build -t your-dockerhub-username/your-image-name .
-
-      - name: Push Docker image to Docker Hub
-        run: docker push your-dockerhub-username/your-image-name
+    - uses: actions/checkout@v1
+    - name: Build & Push Image
+      run: |
+        echo "${{ secrets.DOCKERPW }}" | docker login -u "dab8106" --password-stdin
+        docker image build -t dab8106/pyflask:latest .
+        docker push dab8106/pyflask:latest
