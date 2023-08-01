@@ -1,0 +1,20 @@
+version: '3'
+
+volumes:
+  conf:
+  certbot:
+
+services:
+  Taco:
+    image: gitact:v0.1.0
+    volumes:
+      - certbot:/etc/letsencrypt
+      - conf:/etc/nginx/conf.d
+    ports:
+      - "443:443"
+      - "80:80"
+    networks:
+      - tacoo
+networks:
+  tacoo:
+
