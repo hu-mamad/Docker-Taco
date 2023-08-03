@@ -1,19 +1,27 @@
-name: TACO
+name: Docker Image Push
 
 on:
   push:
-   branches: [ main ]
-  pull_request:
-    branches: [ main ]
-      
-jobs:
-  build:
+    branches:
+      - main
 
+jobs:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Build & Push Image
-      run: |
-        docker build -t gitact:v0.1.0 .
-        docker-compose up -d
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Login to Harbor Registry
+        run: docker login harbor.shomamamama.com -u ${{ secrets.HARBOR_USER }} -p ${{ secrets.HARBOR_PASS }}
+
+      - name: Build and Tag Docker Image
+        run: |
+          docker build -t harbor.shomamamama.com/action-taco/gitact:v0.1.0 .
+          docker tag harbor.shomamamama.com/action-taco/gitact:v0.1.0 harbor.shomamamama.com/action-taco/gitact:latest
+
+      - name: Push Docker Image
+        run: |
+          docker push harbor.shomamamama.com/action-taco/gitact:v0.1.0
+          docker push harbor.shomamamama.com/action-taco/gitact
